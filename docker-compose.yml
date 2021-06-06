@@ -1,0 +1,27 @@
+version: "2.4"
+
+services:
+  mirror:
+    build: ./src/
+    restart: always
+    volumes:
+      - ./mirror:/usr/src/app/mirror
+    command:
+      "yarn start"
+
+  mirror-nginx:
+    image: nginx:1.19.9
+    container_name: mirror-nginx
+    restart: always
+    ports:
+      - "3304:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./mirror:/mirror
+    depends_on:
+      - mirror
+    networks:
+      - main
+
+networks:
+  main:

@@ -9,7 +9,7 @@ const path = require('path')
 const download = (uri, filename, callback) => {
   request.head(uri, (err, res, body) => {
     if (err) return console.log(err)
-    request(uri).pipe(fs.createWriteStream(path.join(process.env.DIRECTORY, filename))).on('close', callback)
+    request(uri).pipe(fs.createWriteStream(path.join('/usr/src/app/mirror/repo', filename))).on('close', callback)
   })
 }
 

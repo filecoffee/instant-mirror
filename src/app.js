@@ -1,16 +1,20 @@
 require('dotenv').config()
 const rp = require('request-promise')
-const $ = require('cheerio')
+const cheerio = require('cheerio')
 
 const { download } = require('./utils/download')
 
 const base = 'http://instantos.surge.sh/'
 
-const minutes = 15; var minutesInMs = minutes * 60 * 1000
+const minutes = 15
+const minutesInMs = minutes * 60 * 1000
+
+console.log('start')
 setInterval(function () {
   rp(base)
     .then(function (html) {
-      $('a', html).each((i, elm) => {
+      const $ = cheerio.load(html)
+      $('a').each((i, elm) => {
         const attribute = elm.attribs.href
         if (attribute.startsWith('.') || attribute.startsWith('http')) return
         download(base + attribute, attribute, () => {
